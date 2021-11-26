@@ -3,8 +3,8 @@ var router = express.Router();
 
 
 router.get('/', function(req, res, next) {
-    res.render('novedades'); //novedades.hbs
-})
+    res.render('novedades', { isNovedades: true });
+});
 
 
 module.exports = router;
