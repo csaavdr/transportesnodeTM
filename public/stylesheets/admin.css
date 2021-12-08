@@ -1,0 +1,11 @@
+.holder {
+    text-align: center;
+}
+
+.holder h1 {
+    position: static;
+}
+
+.container {
+    margin: 100px auto;
+}
