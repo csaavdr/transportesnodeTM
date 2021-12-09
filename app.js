@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 require('dotenv').config(); //para que cargue los datos del .env
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var nosotrosRouter = require('./routes/nosotros'); //nosotros.js
@@ -13,6 +14,7 @@ var galeriaRouter = require('./routes/galeria');
 var novedadesRouter = require('./routes/novedades');
 var contactoRouter = require('./routes/contacto');
 var loginRouter = require('./routes/admin/login'); //admin/login.js
+var adminNovedadesRouter = require('./routes/admin/novedades'); //admin/novedades.js
 
 var app = express();
 
@@ -29,6 +31,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.get("/nosotros", function(req, res, next) {
 //     res.send("Hola Curso!")
 // })
+app.use(session({
+    secret: 'lkdsjaslkdjadkjaslkdja',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 }
+
+}))
+
+secured = async function(req, res, next) {
+    try {
+        console.log(req.session.id_usuario);
+        if (req.session.id_usuario) {
+            next()
+        } else {
+            res.redirect('/admin/login')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 app.use('/', indexRouter);
 app.use('/nosotros', nosotrosRouter);
@@ -37,6 +59,7 @@ app.use('/galeria', galeriaRouter);
 app.use('/novedades', novedadesRouter);
 app.use('/contacto', contactoRouter);
 app.use('/admin/login', loginRouter);
+app.use('/admin/novedades', secured, adminNovedadesRouter);
 
 
 // catch 404 and forward to error handler
