@@ -4,6 +4,9 @@
         <div class="novedades">
             <h3>{{titulo}}</h3>
             <h4>{{subtitulo}}</h4>
+            {{#if imagen}}
+                <img src="{{imagen}}" />
+            {{/if}}
             <p>{{cuerpo}}</p>
             <hr>
         </div>
